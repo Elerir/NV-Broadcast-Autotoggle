@@ -1,6 +1,6 @@
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
-	Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" $((Get-Location).Path) $([Environment]::GetFolderPath([Environment+SpecialFolder]::LocalApplicationData))" -Verb RunAs; exit
+	Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" `"$((Get-Location).Path)`" `"$([Environment]::GetFolderPath([Environment+SpecialFolder]::LocalApplicationData))`"" -Verb RunAs; exit
 }
 pause
 $InstallPath = $args[0]
@@ -15,5 +15,8 @@ Write-Host "Preparing Scheduled task with user variables"
 (Get-Content $InstallPath/NvidiaBroadcastWrapper.vbs).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/NvidiaBroadcastWrapper.vbs
 Write-Host "Creating Scheduled task"
 Register-ScheduledTask -xml (Get-Content $InstallPath'/AutoToggleNvidiaBroadcast.xml' | Out-String) -TaskName "AutoToggleNvidiaBroadcast" -Force
-Write-Host "Installation complete. Please do not move the scripts or the scheduled task will stop working"
+Write-Host "============================================================================================="
+Write-Host "==================================  Installation complete  =================================="
+Write-Host "============================================================================================="
+Write-Host "Please do not move the scripts or the scheduled task will stop working"
 pause
