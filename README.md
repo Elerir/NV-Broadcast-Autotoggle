@@ -9,6 +9,7 @@
 - Auto disable Nvidia Broadcast Denoising if Discord is not running
 
 **Requirements**
+- Administrator privileges (to enable process creation event logs and to be able to create a task that read these event logs)
 - Powershell 4.0+ (to know your Powershell version, open powershell and type "$PSVersionTable")
 - Nvidia Broadcast needs to be started (can be minimized)
 
