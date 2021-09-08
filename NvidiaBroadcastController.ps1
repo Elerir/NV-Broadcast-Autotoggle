@@ -16,6 +16,7 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
 $user32 = Add-Type -MemberDefinition $MethodDefinition -Name 'user32' -Namespace 'Win32' -PassThru
 $hwnd = $user32::FindWindow([IntPtr]::Zero, 'Nvidia BROADCAST')
+$user32::ShowWindow($hwnd, 0)
 
 function getDenoisingState(){
 	$value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA Broadcast\Settings' -Name 'MicDenoising').MicDenoising
@@ -40,12 +41,10 @@ function changeDenoisingState(){
 if ($(isDiscordRunning)){
 	if (-Not $(getDenoisingState)){
 		changeDenoisingState
-        $user32::ShowWindow($hwnd, 0)
 	}
 }
 else{
 	if ($(getDenoisingState)){
 		changeDenoisingState
-        $user32::ShowWindow($hwnd, 0)
 	}
 }
