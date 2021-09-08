@@ -1,5 +1,5 @@
 # NV-Broadcast-Discord-Autotoggle
-<br></br>
+
 ## Why you need this
 - You use Nvidia Broadcast microphone Denoising option
 - Your GPU never goes to IDLE mode (it consumes a lot of power, fans are ON, GPU is hot..) because Nvidia Broadcast is badly designed
@@ -14,7 +14,7 @@
 - Clone the repository (or download/extract it)
 - Move it where you want the utility to be installed
 - Right click on "install.ps1" and select "execute with Powershell"
-- The script will asks for administrator privileges (Why ? Look at Requirements section)
+- The script will asks for administrator privileges (Why ? Look at [Requirements section](#requirements))
 - You're done !
 
 
@@ -25,7 +25,6 @@
 
 
 ## How it works
-
 - install.ps1 :
   - Enable process creation and termination audit (it basically enables Windows Event ID 4688 and 4689 logging)
   - Modify the pre-built task (the xml file) with correct paths (Discord, utility's install path) as well as the .vbs file (see below)
