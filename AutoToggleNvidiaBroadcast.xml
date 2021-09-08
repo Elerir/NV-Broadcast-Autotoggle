@@ -54,8 +54,8 @@ and *[EventData[Data[@Name='ParentProcessName'] and (Data='@LOCALAPPDATADISCORD@
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>wscript</Command>
-      <Arguments>@INSTALLPATH@\NvidiaBroadcastWrapper.vbs</Arguments>
+      <Command>wscript.exe</Command>
+      <Arguments>"@INSTALLPATH@\NvidiaBroadcastWrapper.vbs"</Arguments>
     </Exec>
   </Actions>
 </Task>
