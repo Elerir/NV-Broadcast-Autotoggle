@@ -13,7 +13,7 @@
 - Nvidia Broadcast needs to be started (can be minimized)
 
 **How to install**
-- Clone the repository
+- Clone the repository (or download/extract it)
 - Move it where you want the utility to be installed
 - Right click on "install.ps1" and select "execute with Powershell"
 - You're done !
