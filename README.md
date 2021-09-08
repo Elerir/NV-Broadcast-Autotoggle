@@ -7,7 +7,7 @@
 
 ## What it does
 - Auto enable Nvidia Broadcast Denoising when Discord starts (more accurately, when the Update discord process starts)
-- Auto disable Nvidia Broadcast Denoising if Discord is not running
+- Auto disable Nvidia Broadcast Denoising if Discord is not running (maximum 10 mn after Discord was closed)
 
 
 ## How to install
