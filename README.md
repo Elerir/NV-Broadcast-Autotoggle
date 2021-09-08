@@ -22,6 +22,7 @@
 - Administrator privileges for installation (to enable process creation event logs and to be able to create a task that read these event logs)
 - Powershell 4.0+ (to know your Powershell version, open powershell and type "$PSVersionTable")
 - Nvidia Broadcast needs to be started (can be minimized)
+- Tested with Nvidia Broadcast v1.2.0.49 and v1.3.0.45
 
 
 ## How it works
