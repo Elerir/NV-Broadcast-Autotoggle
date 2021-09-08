@@ -2,7 +2,6 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 {
 	Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" `"$((Get-Location).Path)`" `"$([Environment]::GetFolderPath([Environment+SpecialFolder]::LocalApplicationData))`"" -Verb RunAs; exit
 }
-pause
 $InstallPath = $args[0]
 $LocalAppData = $args[1]
 Write-Host "Enabling Process tracking"
