@@ -37,4 +37,4 @@ NvidiaBroadcastWrapper.vbs :
 This .vbs file is required to the task scheduler. The task scheduler starts this .vbs file which will starts the ps1 file. Directly starting the .ps1 from the Task Scheduler would show a powershell pop-up for a second when the task is executed (even in hidden mode)
 
 **What's next ?**
-- Auto disable Nvidia Broadcast Denoising when Discord stops : I'm still working on this to make sure this is more reliable than checking if discord is running
+- Auto disable Nvidia Broadcast Denoising when Discord stops : I'm still working on this to make sure this is more reliable than checking if discord is running (it might not be the case if you switch off your computer with discord left open)
