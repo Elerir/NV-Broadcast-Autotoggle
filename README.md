@@ -5,7 +5,7 @@
 - Your GPU never goes to IDLE mode (it consumes a lot of power, fans are ON, GPU is hot..) because Nvidia Broadcast is badly designed
 
 **What it does**
-- Auto enable Nvidia Broadcast Denoising when Discord starts
+- Auto enable Nvidia Broadcast Denoising when Discord starts (more accurately, when the Update discord process starts)
 - Auto disable Nvidia Broadcast Denoising if Discord is not running
 
 **Requirements**
@@ -37,4 +37,4 @@ NvidiaBroadcastWrapper.vbs :
 This .vbs file is required to the task scheduler. The task scheduler starts this .vbs file which will starts the ps1 file. Directly starting the .ps1 from the Task Scheduler would show a powershell pop-up for a second when the task is executed (even in hidden mode)
 
 **What's next ?**
-- ~Auto disable Nvidia Broadcast Denoising when Discord stops : I'm still working on this to make sure this is more reliable than checking if discord is running (it might not be the case if you switch off your computer with discord left open)~ --> This cannot be done, because watched 4688 events are based on the discord update process (and there is no termination event for this binary). We cannot use the "real" discord binary because its location can change based on binary's version
+- ~Auto disable Nvidia Broadcast Denoising when Discord stops : I'm still working on this to make sure this is more reliable than checking if discord is running (it might not be the case if you switch off your computer with discord left open)~ --> This cannot be done, because monitored events 4688 are based on the discord update process (and there is no termination event for this binary). We cannot use the "real" discord binary because its location can change based on binary's version
