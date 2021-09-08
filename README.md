@@ -1,6 +1,6 @@
 # NV-Broadcast-Discord-Autotoggle
 
-**Why would you need this**
+**Why you need this**
 - You use Nvidia Broadcast microphone Denoising option
 - Your GPU never goes to IDLE mode (it consumes a lot of power, fans are ON, GPU is hot..) because Nvidia Broadcast is badly designed
 
