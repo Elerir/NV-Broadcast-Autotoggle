@@ -14,7 +14,7 @@
 - Clone the repository (or download/extract it)
 - Move it where you want the utility to be installed
 - Right click on "install.ps1" and select "execute with Powershell"
-- The script will asks for administrator privileges (Why ? Look at [Requirements section](#requirements))
+- The script will ask for administrator privileges (Why ? Look at [Requirements section](#requirements))
 - You're done !
 
 
