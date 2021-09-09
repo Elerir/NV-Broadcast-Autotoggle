@@ -17,7 +17,7 @@ Write-Host "Preparing Scheduled task with user variables"
 (Get-Content $InstallPath/AutoToggleNvidiaBroadcast.xml).replace('@LOCALAPPDATADISCORD@', $LocalAppData) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
 (Get-Content $InstallPath/AutoToggleNvidiaBroadcast.xml).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
 (Get-Content $InstallPath/NvidiaBroadcastWrapper.vbs).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/NvidiaBroadcastWrapper.vbs
-(Get-Content $InstallPath/NvidiaBroadcastWrapper.vbs).replace('@DISCORDBINARYPATH@', $DiscordBinaryPath) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
+(Get-Content $InstallPath/AutoToggleNvidiaBroadcast.xml).replace('@DISCORDBINARYPATH@', $DiscordBinaryPath) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
 
 Write-Host "Creating Scheduled task"
 Register-ScheduledTask -xml (Get-Content $InstallPath'/AutoToggleNvidiaBroadcast.xml' | Out-String) -TaskName "AutoToggleNvidiaBroadcast" -Force
