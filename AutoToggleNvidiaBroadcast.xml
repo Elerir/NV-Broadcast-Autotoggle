@@ -10,7 +10,7 @@
   <Triggers>
     <CalendarTrigger>
       <Repetition>
-        <Interval>PT60M</Interval>
+        <Interval>PT15M</Interval>
         <Duration>P1D</Duration>
         <StopAtDurationEnd>false</StopAtDurationEnd>
       </Repetition>
