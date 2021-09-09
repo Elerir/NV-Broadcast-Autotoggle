@@ -7,7 +7,7 @@
 
 ## What it does
 - Auto enable Nvidia Broadcast Denoising when Discord starts (more accurately, when the Update discord process starts)
-- Auto disable Nvidia Broadcast Denoising if Discord is not running (maximum 10 mn after Discord was closed)
+- Auto disable Nvidia Broadcast Denoising when Discord is closed OR if Discord is not running (check every 15mn, to make sure denoising is actually off if discord is not running)
 
 
 ## How to install
@@ -29,7 +29,7 @@
 - install.ps1 :
   - Enable process creation and termination audit (it basically enables Windows Event ID 4688 and 4689 logging)
   - Modify the pre-built task (the xml file) with correct paths (Discord, utility's install path) as well as the .vbs file (see below)
-  - Create a Scheduled Task "AutoToggleNvidiaBroadcast" that will execute NvidiaBroadcastController.ps1 when discord starts (and every 10mn to check if discord is still open)
+  - Create a Scheduled Task "AutoToggleNvidiaBroadcast" that will execute NvidiaBroadcastController.ps1 when discord starts, when discord stops, (and every 15mn to make sure denoising is actually off if discord is not running)
 
 - NvidiaBroadcastController.ps1 :
   - Send a POSTMESSAGE using Win32API to the Nvidia broadcast application, which enable/disable microphone's Denoising
@@ -37,7 +37,3 @@
 - NvidiaBroadcastWrapper.vbs :
   - Start NvidiaBroadcastController.ps1
   - This .vbs file is required to the task scheduler. The task scheduler starts this .vbs file which will starts the ps1 file. Directly starting the .ps1 from the Task Scheduler would show a powershell pop-up for a second when the task is executed (even in hidden mode)
-
-
-## What's next ?
-- ~Auto disable Nvidia Broadcast Denoising when Discord stops : I'm still working on this to make sure this is more reliable than checking if discord is running (it might not be the case if you switch off your computer with discord left open)~ --> ~This cannot be done, because monitored events 4688 are based on the discord update process (and there is no termination event for this binary). We cannot use the "real" discord binary because its location can change based on binary's version~ --> *this might be fixed and is currently being tested*
