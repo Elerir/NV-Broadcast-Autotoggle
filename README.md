@@ -40,4 +40,4 @@
 
 
 ## What's next ?
-- ~Auto disable Nvidia Broadcast Denoising when Discord stops : I'm still working on this to make sure this is more reliable than checking if discord is running (it might not be the case if you switch off your computer with discord left open)~ --> This cannot be done, because monitored events 4688 are based on the discord update process (and there is no termination event for this binary). We cannot use the "real" discord binary because its location can change based on binary's version
+- ~Auto disable Nvidia Broadcast Denoising when Discord stops : I'm still working on this to make sure this is more reliable than checking if discord is running (it might not be the case if you switch off your computer with discord left open)~ --> ~This cannot be done, because monitored events 4688 are based on the discord update process (and there is no termination event for this binary). We cannot use the "real" discord binary because its location can change based on binary's version~ --> *this might be fixed and is currently being tested*

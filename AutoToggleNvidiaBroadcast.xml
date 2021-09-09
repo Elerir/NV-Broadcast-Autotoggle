@@ -10,7 +10,7 @@
   <Triggers>
     <CalendarTrigger>
       <Repetition>
-        <Interval>PT10M</Interval>
+        <Interval>PT60M</Interval>
         <Duration>P1D</Duration>
         <StopAtDurationEnd>false</StopAtDurationEnd>
       </Repetition>
@@ -23,7 +23,7 @@
     <EventTrigger>
       <Enabled>true</Enabled>
       <Subscription>&lt;QueryList&gt;&lt;Query Id="0" Path="Security"&gt;&lt;Select Path="Security"&gt;*[System[band(Keywords,9007199254740992) and EventID=4688]]
-and *[EventData[Data[@Name='ParentProcessName'] and (Data='@LOCALAPPDATADISCORD@\Discord\Update.exe')]]
+and *[EventData[Data[@Name='ParentProcessName'] and (Data='@DISCORDBINARYPATH@')]]
 &lt;/Select&gt;&lt;/Query&gt;&lt;/QueryList&gt;</Subscription>
     </EventTrigger>
   </Triggers>
