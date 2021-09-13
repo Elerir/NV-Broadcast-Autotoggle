@@ -41,3 +41,6 @@
 
 ## What's next
 - "Choose your software" to control Nvidia Broadcast
+
+## Donations
+- Any donation will be greatly appreciated to the following Ethereum address : 0xE75Ad8f2De7A67b20C90b8B6742B96B3CdECC0d8
