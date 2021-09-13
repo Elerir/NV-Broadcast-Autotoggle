@@ -1,4 +1,5 @@
 # NV-Broadcast-Discord-Autotoggle
+(will soon be renamed to NV-Broadcast-Autotoggle)
 
 ## Why you need this
 - You use Nvidia Broadcast microphone Denoising option
@@ -6,8 +7,8 @@
 
 
 ## What it does
-- Auto enable Nvidia Broadcast Denoising when Discord starts (more accurately, when the Update discord process starts)
-- Auto disable Nvidia Broadcast Denoising when Discord is closed OR if Discord is not running (check every 15mn, to make sure denoising is actually off if discord is not running)
+- Auto enable Nvidia Broadcast Denoising when Discord or Zoom starts
+- Auto disable Nvidia Broadcast Denoising when Discord or Zoom is closed OR if Discord AND Zoom are not running (check every 15mn, to make sure denoising is actually off if Discord and zoom are not running)
 
 
 ## How to install
@@ -28,8 +29,8 @@
 ## How it works
 - install.ps1 :
   - Enable process creation and termination audit (it basically enables Windows Event ID 4688 and 4689 logging)
-  - Modify the pre-built task (the xml file) with correct paths (Discord, utility's install path) as well as the .vbs file (see below)
-  - Create a Scheduled Task "AutoToggleNvidiaBroadcast" that will execute NvidiaBroadcastController.ps1 when discord starts, when discord stops, (and every 15mn to make sure denoising is actually off if discord is not running)
+  - Modify the pre-built task (the xml file) with correct paths (Discord, Zoom, utility's install path) as well as the .vbs file (see below)
+  - Create a Scheduled Task "AutoToggleNvidiaBroadcast" that will execute NvidiaBroadcastController.ps1 when Discord/Zoom starts, when Discord/zoom stops, (and every 15mn to make sure denoising is actually off if discord/zoom are not running)
 
 - NvidiaBroadcastController.ps1 :
   - Send a POSTMESSAGE using Win32API to the Nvidia broadcast application, which enable/disable microphone's Denoising

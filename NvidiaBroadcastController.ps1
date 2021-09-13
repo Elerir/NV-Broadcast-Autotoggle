@@ -21,6 +21,12 @@ function getDenoisingState(){
 	return $value
 }
 
+function isZoomRunning(){
+	$value = $(Get-Process | Where-Object { $_.Name -eq "zoom" }).count
+	Write-Host "isZoomRunning $value"
+	return $value 
+}
+
 function isDiscordRunning(){
 	$value = $(Get-Process | Where-Object { $_.Name -eq "discord" }).count
 	Write-Host "isDiscordRunning $value"
@@ -35,7 +41,7 @@ function changeDenoisingState(){
 	$ret = $user32::PostMessage($hwnd, 0x0111, 16089198, 0);
 }
 
-if ($(isDiscordRunning)){
+if ($(isDiscordRunning) -or $(isZoomRunning)){
 	if (-Not $(getDenoisingState)){
 		changeDenoisingState
 	}
