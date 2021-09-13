@@ -1,5 +1,5 @@
-# NV-Broadcast-Discord-Autotoggle
-(will soon be renamed to NV-Broadcast-Autotoggle)
+# NV-Broadcast-Autotoggle
+(former NV-Broadcast-Discord-Autotoggle)
 
 ## Why you need this
 - You use Nvidia Broadcast microphone Denoising option
@@ -38,3 +38,6 @@
 - NvidiaBroadcastWrapper.vbs :
   - Start NvidiaBroadcastController.ps1
   - This .vbs file is required to the task scheduler. The task scheduler starts this .vbs file which will starts the ps1 file. Directly starting the .ps1 from the Task Scheduler would show a powershell pop-up for a second when the task is executed (even in hidden mode)
+
+## What's next
+- "Choose your software" to control Nvidia Broadcast
