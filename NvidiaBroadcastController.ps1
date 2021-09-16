@@ -15,6 +15,25 @@ $user32 = Add-Type -MemberDefinition $MethodDefinition -Name 'user32' -Namespace
 $hwnd = $user32::FindWindow([IntPtr]::Zero, 'Nvidia BROADCAST')
 $user32::ShowWindow($hwnd, 0)
 
+# https://wiki.winehq.org/List_Of_Windows_Messages
+$WM_COMMAND = 0x0111 
+
+# https://docs.microsoft.com/fr-fr/windows/win32/controls/bn-clicked?redirectedfrom=MSDN
+# Generate BM_CLICKED using BM_CLICK
+# https://docs.microsoft.com/en-us/windows/win32/controls/bm-click
+# Button notification control
+$BM_CLICK = 0x00F5
+$BM_GETCHECK = 0x00F0
+$BM_SETCHECK = 0x00F1
+# Button control ID
+$btn_control_id = 0x806E
+
+function buildWmcommandParams($btn_ctl_id, $notification_control){
+	return $(($btn_ctl_id -band 0xFFFF) -bor ($BM_CLICK -shl 16))
+}
+
+$WPARAM = buildWmcommandParams $btn_control_id $BM_CLICK
+
 function getDenoisingState(){
 	$value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA Broadcast\Settings' -Name 'MicDenoising').MicDenoising
 	Write-Host "getDenoisingState $value"
@@ -38,7 +57,7 @@ function changeDenoisingState(){
 	if ($hwnd -eq 0){
 		Write-Host "cant find process"
 	}
-	$ret = $user32::PostMessage($hwnd, 0x0111, 16089198, 0);
+	$ret = $user32::PostMessage($hwnd, $WM_COMMAND, $WPARAM, 0);
 }
 
 if ($(isDiscordRunning) -or $(isZoomRunning)){
