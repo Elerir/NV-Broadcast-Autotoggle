@@ -7,12 +7,28 @@ public static extern bool PostMessage(IntPtr hWnd, uint Msg, int wParam, int lPa
 public static extern bool ShowWindow(System.IntPtr hWnd, int nCmdShow);
 
 [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-public static extern IntPtr FindWindow(IntPtr sClassName, String sAppName);
+public static extern IntPtr FindWindow(String sClassName, String sAppName);
+
+[DllImport("user32.dll", CharSet = CharSet.Auto)]
+public static extern IntPtr GetDlgCtrlID(IntPtr hWnd);
 
 '@
 
 $user32 = Add-Type -MemberDefinition $MethodDefinition -Name 'user32' -Namespace 'Win32' -PassThru
 $hwnd = $user32::FindWindow([IntPtr]::Zero, 'Nvidia BROADCAST')
+$c = 0
+if ($hwnd -eq 0)
+{
+    Write-Host "Is Nvidia broadcast running ?"
+	$hwnd = $user32::FindWindow("RTXVoiceWindowClass","")
+	if ($hwnd -ne 0)
+	{
+	    $RTXVoice = $True
+	}
+}
+else{
+    $NVBroadcast = $True
+}
 $user32::ShowWindow($hwnd, 0)
 
 # https://wiki.winehq.org/List_Of_Windows_Messages
@@ -26,13 +42,20 @@ $BM_CLICK = 0x00F5
 $BM_GETCHECK = 0x00F0
 $BM_SETCHECK = 0x00F1
 # Button control ID
-$btn_control_id = 0x806E
-
-function buildWmcommandParams($btn_ctl_id, $notification_control){
-	return $(($btn_ctl_id -band 0xFFFF) -bor ($BM_CLICK -shl 16))
+if ($NVBroadcast){
+    $btn_control_id = 0x806E #btn handler
+	$WPARAM = buildWmcommandParams $btn_control_id $BM_CLICK
+}
+else{
+    $btn_control_id = 0x10124 #btn handler
+	$WPARAM = $user32::GetDlgCtrlID($btn_control_id) # TODO : check this one with nv broadcast
 }
 
-$WPARAM = buildWmcommandParams $btn_control_id $BM_CLICK
+function buildWmcommandParams($btn_ctl_id, $notification_control){
+	return $(($btn_ctl_id -band 0xFFFF) -bor ($notification_control -shl 16))
+}
+
+
 
 function getDenoisingState(){
 	$value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA Broadcast\Settings' -Name 'MicDenoising').MicDenoising
@@ -57,7 +80,7 @@ function changeDenoisingState(){
 	if ($hwnd -eq 0){
 		Write-Host "cant find process"
 	}
-	$ret = $user32::PostMessage($hwnd, $WM_COMMAND, $WPARAM, 0);
+	$ret = $user32::PostMessage($hwnd, $WM_COMMAND, $WPARAM, 0); # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST
 }
 
 if ($(isDiscordRunning) -or $(isZoomRunning)){
