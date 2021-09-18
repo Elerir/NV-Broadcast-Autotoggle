@@ -25,8 +25,7 @@ if ($hwnd -eq 0)
 	{
 	    $RTXVoice = $True
 	}
-}
-else{
+}else{
     $NVBroadcast = $True
 }
 $user32::ShowWindow($hwnd, 0)
@@ -45,8 +44,7 @@ $BM_SETCHECK = 0x00F1
 if ($NVBroadcast){
     $btn_control_id = 0x806E #btn handler
 	$WPARAM = buildWmcommandParams $btn_control_id $BM_CLICK
-}
-else{
+}else{
     $btn_control_id = 0x10124 #btn handler
 	$WPARAM = $user32::GetDlgCtrlID($btn_control_id) # TODO : check this one with nv broadcast
 }
@@ -58,7 +56,11 @@ function buildWmcommandParams($btn_ctl_id, $notification_control){
 
 
 function getDenoisingState(){
-	$value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA Broadcast\Settings' -Name 'MicDenoising').MicDenoising
+    if($NVBroadcast){
+	    $value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA Broadcast\Settings' -Name 'MicDenoising').MicDenoising
+	}else{
+	    $value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA RTX Voice\Settings' -Name 'MicDenoising').MicDenoising
+	}
 	Write-Host "getDenoisingState $value"
 	return $value
 }
@@ -87,8 +89,7 @@ if ($(isDiscordRunning) -or $(isZoomRunning)){
 	if (-Not $(getDenoisingState)){
 		changeDenoisingState
 	}
-}
-else{
+}else{
 	if ($(getDenoisingState)){
 		changeDenoisingState
 	}
