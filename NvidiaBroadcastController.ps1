@@ -15,8 +15,21 @@ public static extern IntPtr GetDlgCtrlID(IntPtr hWnd);
 '@
 
 $user32 = Add-Type -MemberDefinition $MethodDefinition -Name 'user32' -Namespace 'Win32' -PassThru
+# https://wiki.winehq.org/List_Of_Windows_Messages
+$WM_COMMAND = 0x0111 
+
+# https://docs.microsoft.com/fr-fr/windows/win32/controls/bn-clicked?redirectedfrom=MSDN
+# Generate BM_CLICKED using BM_CLICK
+# https://docs.microsoft.com/en-us/windows/win32/controls/bm-click
+# Button notification control
+$BM_CLICK = 0x00F5
+$BM_GETCHECK = 0x00F0
+$BM_SETCHECK = 0x00F1
+
+
+
+
 $hwnd = $user32::FindWindow([IntPtr]::Zero, 'Nvidia BROADCAST')
-$c = 0
 if ($hwnd -eq 0)
 {
     Write-Host "Is Nvidia broadcast running ?"
@@ -30,16 +43,7 @@ if ($hwnd -eq 0)
 }
 $user32::ShowWindow($hwnd, 0)
 
-# https://wiki.winehq.org/List_Of_Windows_Messages
-$WM_COMMAND = 0x0111 
 
-# https://docs.microsoft.com/fr-fr/windows/win32/controls/bn-clicked?redirectedfrom=MSDN
-# Generate BM_CLICKED using BM_CLICK
-# https://docs.microsoft.com/en-us/windows/win32/controls/bm-click
-# Button notification control
-$BM_CLICK = 0x00F5
-$BM_GETCHECK = 0x00F0
-$BM_SETCHECK = 0x00F1
 # Button control ID
 if ($NVBroadcast){
     $btn_control_id = 0x806E #btn handler
