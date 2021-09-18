@@ -27,8 +27,6 @@ $BM_GETCHECK = 0x00F0
 $BM_SETCHECK = 0x00F1
 
 
-
-
 $hwnd = $user32::FindWindow([IntPtr]::Zero, 'Nvidia BROADCAST')
 if ($hwnd -eq 0)
 {
