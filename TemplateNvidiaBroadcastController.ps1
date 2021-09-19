@@ -17,7 +17,7 @@ public static extern IntPtr GetDlgCtrlID(IntPtr hWnd);
 
 '@
 
-$global:DenoiserSoftware = "RTXVoice"
+$global:DenoiserSoftware = "@DENOISERSOFTWARE@"
 
 $user32 = Add-Type -MemberDefinition $MethodDefinition -Name 'user32' -Namespace 'Win32' -PassThru
 # https://wiki.winehq.org/List_Of_Windows_Messages
