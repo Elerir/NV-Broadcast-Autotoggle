@@ -124,6 +124,7 @@ if ($LenXMLQuery -gt $LenEmptyXMLQuery -and $DenoiserSoftware -ne $null){
 	Write-Host "Process tracking enabled"
 	Write-Host "Preparing Scheduled task with user variables"
 	(Get-Content $InstallPath/TemplateNvidiaBroadcastController.ps1).replace('@DENOISERSOFTWARE@', $DenoiserSoftware) | Set-Content $InstallPath/NvidiaBroadcastController.ps1
+	(Get-Content $InstallPath/NvidiaBroadcastController.ps1).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/NvidiaBroadcastController.ps1
 	(Get-Content $InstallPath/TemplateAutoToggleNvidiaBroadcast.xml).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
 	(Get-Content $InstallPath/TemplateNvidiaBroadcastWrapper.vbs).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/NvidiaBroadcastWrapper.vbs
 	(Get-Content $InstallPath/AutoToggleNvidiaBroadcast.xml).replace('@XMLQUERY@', $global:XMLQuery) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml

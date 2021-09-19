@@ -2,3 +2,5 @@ NvidiaBroadcastController.ps1
 AutoToggleNvidiaBroadcast.xml
 NvidiaBroadcastWrapper.vbs
 *.zip
+debug.log
+mutex

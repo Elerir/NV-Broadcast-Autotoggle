@@ -1,3 +1,19 @@
+$debug = $False
+
+function logging($msg){
+    if ($debug){
+        Add-Content -Path "@INSTALLPATH@\debug.log" -Value "$([datetime]::Now.ToString('yyyy-mm-dd-HH:mm:ss')) [INFO] $msg"
+	}
+	Write-host $msg
+}
+
+if (Test-Path -Path "@INSTALLPATH@\mutex"){
+    logging("script already running, closing")
+    exit
+}
+$pid = $(Get-WMIObject -Class Win32_Process -Filter "Name='PowerShell.EXE'" | Where {$_.CommandLine -Like "*NvidiaBroadcastController.ps1"}).ProcessId
+Add-Content -Path "@INSTALLPATH@\mutex" -Value "$pid"
+
 $MethodDefinition = @'
 
 [DllImport("user32.dll", SetLastError = true)]
@@ -32,6 +48,7 @@ $BM_GETCHECK = 0x00F0
 $BM_SETCHECK = 0x00F1
 $hwnd = 0
 
+
 function buildWmcommandParams($btn_ctl_id, $notification_control){
 	return $(($btn_ctl_id -band 0xFFFF) -bor ($notification_control -shl 16))
 }
@@ -54,11 +71,12 @@ function getDenoisingState(){
 	}else{
 	    $value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA RTX Voice\Settings' -Name 'MicDenoising').MicDenoising
 	}
-	Write-Host "getDenoisingState $value"
+	logging("getDenoisingState $value")
 	return $value
 }
 
 function isZoomRunning(){
+    logging("isZoomRunning")
 	try{
 	    return $(Get-Process zoom -ErrorAction Stop | Where-Object {$_.Path -like "*Zoom\bin\Zoom.exe"})
 	}catch{
@@ -67,6 +85,7 @@ function isZoomRunning(){
 }
 
 function isDiscordRunning(){
+    logging("isDiscordRunning")
 	try{
 		return $(Get-Process discord -ErrorAction Stop | Where-Object {$_.Path -like "*\discord.exe"})
 	}catch{
@@ -75,27 +94,27 @@ function isDiscordRunning(){
 }
 
 function changeDenoisingState($hwnd, $WM_COMMAND, $WPARAM, $LPARAM){
-	Write-Host "changeDenoisingState"
+	logging("changeDenoisingState")
 	if ($hwnd -eq 0){
-		Write-Host "cant find process"
+		logging("cant find denoising process")
 	}
 	$ret = $user32::PostMessage($hwnd, $WM_COMMAND, $WPARAM, $LPARAM);
 }
 
-$timeout = 10
+$timeout = 60
 $retry = 0
 if ($(isDiscordRunning) -or $(isZoomRunning)){
 	if (-Not $(getDenoisingState)){
 	    # then enable
 		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0  # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST
         while ($retry -lt $timeout){
-		    if ($getDenoisingState){
+		    if ($(getDenoisingState)){
 		    # Might give a look to something like wait-message
-			    sleep(6)
+			    sleep(1)
 			    break
 			}else{
 		    # Might give a look to something like wait-message
-			    sleep(6)
+			    sleep(1)
 				$timeout += 1
 			}
 		}
@@ -104,15 +123,19 @@ if ($(isDiscordRunning) -or $(isZoomRunning)){
 	if ($(getDenoisingState)){
 	    ## then disable
 		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0 
-		if (-Not $getDenoisingState){
-		    # Might give a look to something like wait-message
-		    sleep(6)
-		    break
-		}
-		else{
-		    # Might give a look to something like wait-message
-			sleep(6)
-			$timeout += 1
+		while ($retry -lt $timeout){
+			if (-Not $(getDenoisingState)){
+				# Might give a look to something like wait-message
+				sleep(1)
+				break
+			}
+			else{
+				# Might give a look to something like wait-message
+				sleep(1)
+				$timeout += 1
+			}
 		}
 	}
 }
+
+Remove-Item -Path "@INSTALLPATH@\mutex"
