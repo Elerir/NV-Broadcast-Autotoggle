@@ -59,15 +59,19 @@ function getDenoisingState(){
 }
 
 function isZoomRunning(){
-	$value = $(Get-Process | Where-Object { $_.Name -eq "zoom" }).count
-	Write-Host "isZoomRunning $value"
-	return $value 
+	try{
+	    return $(Get-Process zoom -ErrorAction Stop | Where-Object {$_.Path -like "*Zoom\bin\Zoom.exe"})
+	}catch{
+	    return $null
+	}
 }
 
 function isDiscordRunning(){
-	$value = $(Get-Process | Where-Object { $_.Name -eq "discord" }).count
-	Write-Host "isDiscordRunning $value"
-	return $value 
+	try{
+		return $(Get-Process discord -ErrorAction Stop | Where-Object {$_.Path -like "*\discord.exe"})
+	}catch{
+	    return $null
+	}
 }
 
 function changeDenoisingState($hwnd, $WM_COMMAND, $WPARAM, $LPARAM){
