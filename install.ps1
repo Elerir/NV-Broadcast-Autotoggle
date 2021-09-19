@@ -50,7 +50,7 @@ if ($DataFilter){
 	Write-Host "Process tracking enabled"
 	Write-Host "Preparing Scheduled task with user variables"
 	(Get-Content $InstallPath/TemplateAutoToggleNvidiaBroadcast.xml).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
-	(Get-Content $InstallPath/NvidiaBroadcastWrapper.vbs).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/NvidiaBroadcastWrapper.vbs
+	(Get-Content $InstallPath/TemplateNvidiaBroadcastWrapper.vbs).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/NvidiaBroadcastWrapper.vbs
 	(Get-Content $InstallPath/AutoToggleNvidiaBroadcast.xml).replace('@DATAFILTER@', $DataFilter) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
 
 	Write-Host "Creating Scheduled task"
