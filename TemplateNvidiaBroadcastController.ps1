@@ -101,7 +101,7 @@ if ($(isDiscordRunning) -or $(isZoomRunning)){
 		    break
 		}
 		else{
-			sleep(2)
+			sleep(6)
 			$timeout += 1
 		}
 	}
