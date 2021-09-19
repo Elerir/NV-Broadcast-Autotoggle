@@ -42,7 +42,7 @@ BRANCH IS IN DEV
 
 ## What's next
 - "Choose your software" to control Nvidia Broadcast
-- Find a way to fix multiple process start (for instance, zoom starts severall process from same path, same at stopping), thus, if changedenoisingstate takes too long, it might creates issues (consider aswell remove 15mn check)
+- Find a way to fix multiple process start (for instance, zoom starts severall process from same path, same at stopping), thus, if changedenoisingstate takes too long, it might creates issues (consider aswell remove 15mn check) -> partially fixed with mutex
 
 ## Donations
 - Any donation will be greatly appreciated to the following Ethereum address : 0xE75Ad8f2De7A67b20C90b8B6742B96B3CdECC0d8
