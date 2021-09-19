@@ -6,7 +6,8 @@ $InstallPath = $args[0]
 $global:DataFilter = $null
 
 $global:XMLQuery = "<QueryList>"
-$global:XMLProcessMonitoring = "*[System[band(Keywords,9007199254740992) and EventID=4688 or EventID=4689]] and "
+$global:XMLProcessCreation = "*[System[band(Keywords,9007199254740992) and EventID=4688 ]] and "
+$global:XMLProcessTermination = "*[System[band(Keywords,9007199254740992) and  EventID=4689]] and "
 $global:QueryNumber = 0
 
 # Could be usefull to know if rtx voice or broadcast are installed
@@ -51,12 +52,19 @@ function isDiscordInstalled(){
 			$discordIsInstalled = $True
 			$currentQuery = `
 				'<Query Id="'+$global:QueryNumber+'" Path="Security">'+`
-					'<Select Path="Security">'+$global:XMLProcessMonitoring+`
+					'<Select Path="Security">'+$global:XMLProcessCreation+`
 						'*[EventData[Data[@Name="NewProcessName"]="'+$DiscordBinaryPath+'"]]'+`
 					'</Select>'+`
 				'</Query>'
-			$global:XMLQuery += $currentQuery
 			$global:QueryNumber += 1
+			$currentQuery = `
+				'<Query Id="'+$global:QueryNumber+'" Path="Security">'+`
+					'<Select Path="Security">'+$global:XMLProcessTermination+`
+						'*[EventData[Data[@Name="ProcessName"]="'+$DiscordBinaryPath+'"]]'+`
+					'</Select>'+`
+				'</Query>'
+			$global:QueryNumber += 1
+			$global:XMLQuery += $currentQuery
 			$global:DataFilter += "Data='"+$DiscordBinaryPath+"'"
 		}
 		catch{
@@ -79,12 +87,19 @@ $ZoomBinaryPath = $env:AppData+"\Zoom\bin\Zoom.exe"
 	    $zoomIsInstalled = $True
 		$currentQuery = `
 				'<Query Id="'+$global:QueryNumber+'" Path="Security">'+`
-					'<Select Path="Security">'+$global:XMLProcessMonitoring+`
+					'<Select Path="Security">'+$global:XMLProcessCreation+`
 						'*[EventData[Data[@Name="NewProcessName"]="'+$ZoomBinaryPath+'"]]'+`
 					'</Select>'+`
 				'</Query>'
-		$global:XMLQuery += $currentQuery
 		$global:QueryNumber += 1
+		$currentQuery = `
+				'<Query Id="'+$global:QueryNumber+'" Path="Security">'+`
+					'<Select Path="Security">'+$global:XMLProcessTermination+`
+						'*[EventData[Data[@Name="ProcessName"]="'+$ZoomBinaryPath+'"]]'+`
+					'</Select>'+`
+				'</Query>'
+		$global:QueryNumber += 1
+		$global:XMLQuery += $currentQuery
 
 	}
 	else{

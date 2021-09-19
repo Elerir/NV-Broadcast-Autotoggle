@@ -78,12 +78,31 @@ function changeDenoisingState($hwnd, $WM_COMMAND, $WPARAM, $LPARAM){
 	$ret = $user32::PostMessage($hwnd, $WM_COMMAND, $WPARAM, $LPARAM);
 }
 
+$timeout = 10
+$retry = 0
 if ($(isDiscordRunning) -or $(isZoomRunning)){
 	if (-Not $(getDenoisingState)){
+	    # then enable
 		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0  # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST
+        while ($retry -lt $timeout){
+		    if ($getDenoisingState){
+			    break
+			}else{
+			    sleep(2)
+				$timeout += 1
+			}
+		}
 	}
 }else{
 	if ($(getDenoisingState)){
+	    ## then disable
 		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0 
+		if (-Not $getDenoisingState){
+		    break
+		}
+		else{
+			sleep(2)
+			$timeout += 1
+		}
 	}
 }
