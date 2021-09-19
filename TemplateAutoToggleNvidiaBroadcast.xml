@@ -11,7 +11,7 @@
   <Triggers>
     <CalendarTrigger>
       <Repetition>
-        <Interval>PT15M</Interval>
+        <Interval>PT2M</Interval>
         <Duration>P1D</Duration>
         <StopAtDurationEnd>false</StopAtDurationEnd>
       </Repetition>
