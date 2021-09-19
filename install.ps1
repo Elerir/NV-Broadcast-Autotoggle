@@ -5,6 +5,10 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 $InstallPath = $args[0]
 $global:DataFilter = $null
 
+$global:XMLQuery = "<QueryList>"
+$global:XMLProcessMonitoring = "*[System[band(Keywords,9007199254740992) and EventID=4688 or EventID=4689]] and "
+$global:QueryNumber = 0
+
 # Could be usefull to know if rtx voice or broadcast are installed
 $DenoiserSoftware = $null
 $InstalledSoftware = Get-ChildItem "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall"
@@ -45,6 +49,14 @@ function isDiscordInstalled(){
 		try{
 			$DiscordBinaryPath = $($(Get-ItemProperty -path $discordKeyPath).'(default)').split(',')[0].replace('"','')
 			$discordIsInstalled = $True
+			$currentQuery = `
+				'<Query Id="'+$global:QueryNumber+'" Path="Security">'+`
+					'<Select Path="Security">'+$global:XMLProcessMonitoring+`
+						'*[EventData[Data[@Name="NewProcessName"]="'+$DiscordBinaryPath+'"]]'+`
+					'</Select>'+`
+				'</Query>'
+			$global:XMLQuery += $currentQuery
+			$global:QueryNumber += 1
 			$global:DataFilter += "Data='"+$DiscordBinaryPath+"'"
 		}
 		catch{
@@ -65,12 +77,15 @@ $ZoomBinaryPath = $env:AppData+"\Zoom\bin\Zoom.exe"
     $zoomIsInstalled = $null
 	if ($(Test-Path -Path $ZoomBinaryPath)){
 	    $zoomIsInstalled = $True
-		if ($global:DataFilter -ne $null){
-			$global:DataFilter += " or Data='"+$ZoomBinaryPath+"'"
-		}
-		else{
-			$global:DataFilter += "Data='"+$ZoomBinaryPath+"'"
-		}
+		$currentQuery = `
+				'<Query Id="'+$global:QueryNumber+'" Path="Security">'+`
+					'<Select Path="Security">'+$global:XMLProcessMonitoring+`
+						'*[EventData[Data[@Name="NewProcessName"]="'+$ZoomBinaryPath+'"]]'+`
+					'</Select>'+`
+				'</Query>'
+		$global:XMLQuery += $currentQuery
+		$global:QueryNumber += 1
+
 	}
 	else{
 	    $zoomIsInstalled = $False
@@ -82,8 +97,12 @@ $ZoomBinaryPath = $env:AppData+"\Zoom\bin\Zoom.exe"
 isDiscordInstalled
 isZoomInstalled
 
-write-host $global:DataFilter
-if ($global:DataFilter -and $DenoiserSoftware -ne $null){
+write-host $global:XMLQuery
+$global:XMLQuery += "</QueryList>"
+$global:XMLQuery = $global:XMLQuery.replace("<","&lt;").replace(">","&gt;")
+$LenXMLQuery = $global:XMLQuery.length
+$LenEmptyXMLQuery = "<QueryList></QueryList>".replace("<","&lt;").replace(">","&gt;").length
+if ($LenXMLQuery -gt $LenEmptyXMLQuery -and $DenoiserSoftware -ne $null){
 	Write-Host "Enabling Process tracking"
 	auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:disable
 	auditpol /set /subcategory:"{0CCE922C-69AE-11D9-BED3-505054503030}" /success:enable /failure:disable
@@ -92,7 +111,7 @@ if ($global:DataFilter -and $DenoiserSoftware -ne $null){
 	(Get-Content $InstallPath/TemplateNvidiaBroadcastController.ps1).replace('@DENOISERSOFTWARE@', $DenoiserSoftware) | Set-Content $InstallPath/NvidiaBroadcastController.ps1
 	(Get-Content $InstallPath/TemplateAutoToggleNvidiaBroadcast.xml).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
 	(Get-Content $InstallPath/TemplateNvidiaBroadcastWrapper.vbs).replace('@INSTALLPATH@', $InstallPath) | Set-Content $InstallPath/NvidiaBroadcastWrapper.vbs
-	(Get-Content $InstallPath/AutoToggleNvidiaBroadcast.xml).replace('@DATAFILTER@', $global:DataFilter) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
+	(Get-Content $InstallPath/AutoToggleNvidiaBroadcast.xml).replace('@XMLQUERY@', $global:XMLQuery) | Set-Content $InstallPath/AutoToggleNvidiaBroadcast.xml
 
 	Write-Host "Creating Scheduled task"
 	Register-ScheduledTask -xml (Get-Content $InstallPath'/AutoToggleNvidiaBroadcast.xml' | Out-String) -TaskName "AutoToggleNvidiaBroadcast" -Force

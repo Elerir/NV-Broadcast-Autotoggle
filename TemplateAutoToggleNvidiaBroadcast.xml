@@ -23,9 +23,7 @@
     </CalendarTrigger>
     <EventTrigger>
       <Enabled>true</Enabled>
-      <Subscription>&lt;QueryList&gt;&lt;Query Id="0" Path="Security"&gt;&lt;Select Path="Security"&gt;*[System[band(Keywords,9007199254740992) and EventID=4688 or EventID=4689]]
-and *[EventData[@DATAFILTER@]]
-&lt;/Select&gt;&lt;/Query&gt;&lt;/QueryList&gt;</Subscription>
+      <Subscription>@XMLQUERY@</Subscription>
     </EventTrigger>
   </Triggers>
   <Principals>
