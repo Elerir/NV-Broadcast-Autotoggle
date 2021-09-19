@@ -35,9 +35,9 @@ and *[EventData[@DATAFILTER@]]
     </Principal>
   </Principals>
   <Settings>
-    <MultipleInstancesPolicy>Queue</MultipleInstancesPolicy>
-    <DisallowStartIfOnBatteries>true</DisallowStartIfOnBatteries>
-    <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
     <AllowHardTerminate>true</AllowHardTerminate>
     <StartWhenAvailable>false</StartWhenAvailable>
     <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
@@ -50,7 +50,7 @@ and *[EventData[@DATAFILTER@]]
     <Hidden>false</Hidden>
     <RunOnlyIfIdle>false</RunOnlyIfIdle>
     <WakeToRun>false</WakeToRun>
-    <ExecutionTimeLimit>PT72H</ExecutionTimeLimit>
+    <ExecutionTimeLimit>PT20S</ExecutionTimeLimit>
     <Priority>7</Priority>
   </Settings>
   <Actions Context="Author">
