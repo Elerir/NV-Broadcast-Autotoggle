@@ -63,7 +63,9 @@ if ($DenoiserSoftware -eq "NVBroadcast"){
 	$WPARAM = $user32::GetDlgCtrlID($btn_control_id) # TODO : check this one with nv broadcast ($WPARAM = always 1026)
 }
 
-$user32::ShowWindow($hwnd, 0)
+if (-Not $Debug){
+    $user32::ShowWindow($hwnd, 0)
+}
 
 function getDenoisingState(){
     if($global:DenoiserSoftware -eq "NVBroadcast"){
