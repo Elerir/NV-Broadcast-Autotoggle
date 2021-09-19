@@ -57,7 +57,7 @@ function isDiscordInstalled(){
 					'</Select>'+`
 				'</Query>'
 			$global:QueryNumber += 1
-			$currentQuery = `
+			$currentQuery += `
 				'<Query Id="'+$global:QueryNumber+'" Path="Security">'+`
 					'<Select Path="Security">'+$global:XMLProcessTermination+`
 						'*[EventData[Data[@Name="ProcessName"]="'+$DiscordBinaryPath+'"]]'+`
@@ -92,7 +92,7 @@ $ZoomBinaryPath = $env:AppData+"\Zoom\bin\Zoom.exe"
 					'</Select>'+`
 				'</Query>'
 		$global:QueryNumber += 1
-		$currentQuery = `
+		$currentQuery += `
 				'<Query Id="'+$global:QueryNumber+'" Path="Security">'+`
 					'<Select Path="Security">'+$global:XMLProcessTermination+`
 						'*[EventData[Data[@Name="ProcessName"]="'+$ZoomBinaryPath+'"]]'+`
