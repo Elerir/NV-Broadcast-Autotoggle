@@ -86,9 +86,12 @@ if ($(isDiscordRunning) -or $(isZoomRunning)){
 		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0  # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST
         while ($retry -lt $timeout){
 		    if ($getDenoisingState){
+		    # Might give a look to something like wait-message
+			    sleep(6)
 			    break
 			}else{
-			    sleep(2)
+		    # Might give a look to something like wait-message
+			    sleep(6)
 				$timeout += 1
 			}
 		}
@@ -98,9 +101,12 @@ if ($(isDiscordRunning) -or $(isZoomRunning)){
 	    ## then disable
 		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0 
 		if (-Not $getDenoisingState){
+		    # Might give a look to something like wait-message
+		    sleep(6)
 		    break
 		}
 		else{
+		    # Might give a look to something like wait-message
 			sleep(6)
 			$timeout += 1
 		}
