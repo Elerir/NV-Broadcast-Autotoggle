@@ -12,7 +12,7 @@ if (Test-Path -Path "@INSTALLPATH@\mutex"){
     exit
 }
 $script_pid = $(Get-WMIObject -Class Win32_Process -Filter "Name='PowerShell.EXE'" | Where {$_.CommandLine -Like "*NvidiaBroadcastController.ps1"}).ProcessId
-Add-Content -Path "@INSTALLPATH@\mutex" -Value "$pid"
+Add-Content -Path "@INSTALLPATH@\mutex" -Value "$script_pid"
 
 $MethodDefinition = @'
 
