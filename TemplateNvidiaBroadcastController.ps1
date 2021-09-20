@@ -78,25 +78,25 @@ function getDenoisingState(){
 }
 
 function isZoomRunning(){
-    logging("isZoomRunning")
+	$result = $null
 	try{
-	    return $(Get-Process zoom -ErrorAction Stop | Where-Object {$_.Path -like "*Zoom\bin\Zoom.exe"})
-	}catch{
-	    return $null
-	}
+	    $result = $(Get-Process zoom -ErrorAction Stop | Where-Object {$_.Path -like "*Zoom\bin\Zoom.exe"})
+	}catch{}
+    logging("isZoomRunning $result")
+	return $result
 }
 
 function isDiscordRunning(){
-    logging("isDiscordRunning")
+	$result = $null
 	try{
-		return $(Get-Process discord -ErrorAction Stop | Where-Object {$_.Path -like "*\discord.exe"})
-	}catch{
-	    return $null
-	}
+		$result = $(Get-Process discord -ErrorAction Stop | Where-Object {$_.Path -like "*\discord.exe"})
+	}catch{}
+    logging("isDiscordRunning $result")
+	return $result
 }
 
 function changeDenoisingState($hwnd, $WM_COMMAND, $WPARAM, $LPARAM){
-	logging("changeDenoisingState")
+	logging("changeDenoisingState $hwnd, $WM_COMMAND, $WPARAM, $LPARAM")
 	if ($hwnd -eq 0){
 		logging("cant find denoising process")
 	}
@@ -108,7 +108,7 @@ $retry = 0
 if ($(isDiscordRunning) -or $(isZoomRunning)){
 	if (-Not $(getDenoisingState)){
 	    # then enable
-		changeDenoisingState $hwnd $WM_COMMAND $WPARAM $btn_control_id  # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST
+		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0  # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST -> NOPE
         while ($retry -lt $timeout){
 		    if ($(getDenoisingState)){
 		    # Might give a look to something like wait-message
@@ -117,7 +117,7 @@ if ($(isDiscordRunning) -or $(isZoomRunning)){
 			}else{
 		    # Might give a look to something like wait-message
 			    sleep(1)
-				$timeout += 1
+				$retry += 1
 			}
 		}
 	}
@@ -134,7 +134,7 @@ if ($(isDiscordRunning) -or $(isZoomRunning)){
 			else{
 				# Might give a look to something like wait-message
 				sleep(1)
-				$timeout += 1
+				$retry += 1
 			}
 		}
 	}
