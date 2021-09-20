@@ -54,7 +54,7 @@ function buildWmcommandParams($btn_ctl_id, $notification_control){
 }
 
 if ($DenoiserSoftware -eq "NVBroadcast"){
-    $hwnd = $user32::FindWindow([IntPtr]::Zero, 'Nvidia BROADCAST')
+    $hwnd = $user32::FindWindow("RTXVoiceWindowClass","Nvidia BROADCAST")
 	$btn_control_id = 0x806E #btn handler #should change aswell!
 	$WPARAM = buildWmcommandParams $btn_control_id $BM_CLICK
 }else{
