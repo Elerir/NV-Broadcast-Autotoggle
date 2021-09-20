@@ -11,7 +11,7 @@ if (Test-Path -Path "@INSTALLPATH@\mutex"){
     logging("script already running, closing")
     exit
 }
-$pid = $(Get-WMIObject -Class Win32_Process -Filter "Name='PowerShell.EXE'" | Where {$_.CommandLine -Like "*NvidiaBroadcastController.ps1"}).ProcessId
+$script_pid = $(Get-WMIObject -Class Win32_Process -Filter "Name='PowerShell.EXE'" | Where {$_.CommandLine -Like "*NvidiaBroadcastController.ps1"}).ProcessId
 Add-Content -Path "@INSTALLPATH@\mutex" -Value "$pid"
 
 $MethodDefinition = @'
@@ -59,8 +59,8 @@ if ($DenoiserSoftware -eq "NVBroadcast"){
 	$WPARAM = buildWmcommandParams $btn_control_id $BM_CLICK
 }else{
     $hwnd = $user32::FindWindow("RTXVoiceWindowClass","")
-	$btn_control_id = $user32::FindWindowEx($hwnd,0,"Button","Remove background noise from my microphone")
-	$WPARAM = $user32::GetDlgCtrlID($btn_control_id) # TODO : check this one with nv broadcast ($WPARAM = always 1026)
+	$btn_hwnd = $user32::FindWindowEx($hwnd,0,"Button","Remove background noise from my microphone") #try with btn control id
+	$WPARAM = $user32::GetDlgCtrlID($btn_hwnd)
 }
 
 if (-Not $Debug){
@@ -108,7 +108,7 @@ $retry = 0
 if ($(isDiscordRunning) -or $(isZoomRunning)){
 	if (-Not $(getDenoisingState)){
 	    # then enable
-		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0  # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST
+		changeDenoisingState $hwnd $WM_COMMAND $WPARAM $btn_control_id  # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST
         while ($retry -lt $timeout){
 		    if ($(getDenoisingState)){
 		    # Might give a look to something like wait-message
