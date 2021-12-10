@@ -95,6 +95,15 @@ function isDiscordRunning(){
 	return $result
 }
 
+function isOBSRunning(){
+	$result = $null
+	try{
+		$result = $(Get-Process obs64 -ErrorAction Stop | Where-Object {$_.Path -like "*\obs64.exe"})
+	}catch{}
+    logging("isOBSRunning $result")
+	return $result
+}
+
 function changeDenoisingState($hwnd, $WM_COMMAND, $WPARAM, $LPARAM){
 	logging("changeDenoisingState $hwnd, $WM_COMMAND, $WPARAM, $LPARAM")
 	if ($hwnd -eq 0){
@@ -105,7 +114,7 @@ function changeDenoisingState($hwnd, $WM_COMMAND, $WPARAM, $LPARAM){
 
 $timeout = 60
 $retry = 0
-if ($(isDiscordRunning) -or $(isZoomRunning)){
+if ($(isDiscordRunning) -or $(isZoomRunning) -or $(isOBSRunning)){
 	if (-Not $(getDenoisingState)){
 	    # then enable
 		changeDenoisingState $hwnd $WM_COMMAND $WPARAM 0  # Should work with $btn_control_id instead of 0 : TODO CHECK IT WITH NVIDIA BROADCAST -> NOPE

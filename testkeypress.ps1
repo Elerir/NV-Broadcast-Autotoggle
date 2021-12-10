@@ -1,5 +1,5 @@
 # valid key names can be ASCII codes:
-$key = 13
+$key = 65
     
 # this is the c# definition of a static Windows API method:
 $MethodDefinition = @'
@@ -12,13 +12,23 @@ $MethodDefinition = @'
 '@
 
 $user32 = Add-Type -MemberDefinition $MethodDefinition -Name "user32" -Namespace 'Win32' -PassThru
-    
-Write-Host "Press A within the next second!"
 
-$result = $False
-while (-Not $result){
-    $result = [bool]($user32::GetAsyncKeyState($key) -eq -32767)
+$list = @()
+$aPressed = $False
+while ($Finished -eq $null -or $Finished.tolower() -ne "y" ){
+	Write-Host "go to a window and press 'a'"
+	while (-Not $aPressed){
+		$aPressed = [bool]($user32::GetAsyncKeyState($key) -eq -32767)
+	}
+	$a = $user32::GetForegroundWindow()
+	$WH = get-process | ? { $_.mainwindowhandle -eq $a }
+	if (-Not $list.contains($WH.path)){
+		Write-Host $WH.path
+		$list += $WH.path
+	}
+	sleep(1)
+	$Finished = Read-Host "Did you finish ? (y/n)"
 }
-$a = $user32::GetForegroundWindow()
-$WH = get-process | ? { $_.mainwindowhandle -eq $a }
 
+Write-Host $list
+Write-Host $list.count

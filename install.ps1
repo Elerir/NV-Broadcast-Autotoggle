@@ -10,6 +10,13 @@ $global:XMLProcessCreation = "*[System[band(Keywords,9007199254740992) and Event
 $global:XMLProcessTermination = "*[System[band(Keywords,9007199254740992) and  EventID=4689]] and "
 $global:QueryNumber = 0
 
+Write-Host $InstallPath"\mutex"
+Write-Host $(Test-Path $InstallPath"\mutex")
+
+if (Test-Path $InstallPath"\mutex"){
+	Remove-item $InstallPath"\mutex"
+}
+
 # Could be usefull to know if rtx voice or broadcast are installed
 $DenoiserSoftware = $null
 $InstalledSoftware = Get-ChildItem "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall"

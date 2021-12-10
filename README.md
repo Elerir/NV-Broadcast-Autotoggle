@@ -8,8 +8,8 @@ BRANCH IS IN DEV
 
 
 ## What it does
-- Auto enable Nvidia Broadcast Denoising when Discord or Zoom starts
-- Auto disable Nvidia Broadcast Denoising when Discord or Zoom is closed OR if Discord AND Zoom are not running (check every 15mn, to make sure denoising is actually off if Discord and zoom are not running)
+- Auto enable Nvidia Broadcast Denoising when Discord or Zoom starts (doesnt monitor for OBS start / stop for now)
+- Auto disable Nvidia Broadcast Denoising when Discord or Zoom is closed OR if Discord AND Zoom AND OBS are not running (check every 15mn, to make sure denoising is actually off if Discord, zoom and OBS are not running)
 
 
 ## How to install
