@@ -56,7 +56,9 @@ function buildWmcommandParams($btn_ctl_id, $notification_control){
 if ($DenoiserSoftware -eq "NVBroadcast"){
     $hwnd = $user32::FindWindow("RTXVoiceWindowClass","Nvidia BROADCAST")
 	$btn_control_id = 0x806E #btn handler #should change aswell!
+#	$btn_speaker_control_id = 0x80E4
 	$WPARAM = buildWmcommandParams $btn_control_id $BM_CLICK
+#	$WPARAM_speaker = buildWmcommandParams $btn_control_id $BM_CLICK
 }else{
     $hwnd = $user32::FindWindow("RTXVoiceWindowClass","")
 	$btn_hwnd = $user32::FindWindowEx($hwnd,0,"Button","Remove background noise from my microphone") #try with btn control id
@@ -76,6 +78,16 @@ function getDenoisingState(){
 	logging("getDenoisingState $value")
 	return $value
 }
+
+# function getSpeakerDenoisingState(){
+    # if($global:DenoiserSoftware -eq "NVBroadcast"){
+	    # $value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA Broadcast\Settings' -Name 'SpeakerDenoising').SpeakerDenoising
+	# }else{
+	    # $value = $(Get-ItemProperty -path 'HKCU:\SOFTWARE\NVIDIA Corporation\NVIDIA RTX Voice\Settings' -Name 'SpeakerDenoising').SpeakerDenoising
+	# }
+	# logging("getDenoisingState $value")
+	# return $value
+# }
 
 function isZoomRunning(){
 	$result = $null
@@ -111,6 +123,14 @@ function changeDenoisingState($hwnd, $WM_COMMAND, $WPARAM, $LPARAM){
 	}
 	$ret = $user32::PostMessage($hwnd, $WM_COMMAND, $WPARAM, $LPARAM);
 }
+
+# function changeSpeakerDenoisingState($hwnd, $WM_COMMAND, $WPARAM, $LPARAM){
+	# logging("changeDenoisingState $hwnd, $WM_COMMAND, $WPARAM_speaker, $LPARAM")
+	# if ($hwnd -eq 0){
+		# logging("cant find denoising process")
+	# }
+	# $ret = $user32::PostMessage($hwnd, $WM_COMMAND, $WPARAM_speaker, $LPARAM);
+# }
 
 $timeout = 60
 $retry = 0
