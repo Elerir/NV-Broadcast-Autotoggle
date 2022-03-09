@@ -15,7 +15,7 @@ BRANCH IS IN DEV
 ## How to install
 - Clone the repository (or download/extract it)
 - Move it where you want the utility to be installed
-- Tweak the "TemplateNvidiaBroadcastController.ps1" options : modify it and set to $True enableSpeakersDenoising and enableMicDenoising according to your needs
+- Tweak (only for Nvidiabroadcast for now) the "TemplateNvidiaBroadcastController.ps1" options : modify it and set to $True enableSpeakersDenoising and enableMicDenoising according to your needs
 - Right click on "install.ps1" and select "execute with Powershell"
 - The script will ask for administrator privileges (Why ? Look at [Requirements section](#requirements))
 - You're done !
