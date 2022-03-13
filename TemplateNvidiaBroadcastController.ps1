@@ -71,12 +71,11 @@ if ($DenoiserSoftware -eq "NVBroadcast"){
 		$btn_hwnd = $user32::FindWindowEx($hwnd,0,"Button","Remove background noise from my microphone") #try with btn control id
 		$WPARAM = $user32::GetDlgCtrlID($btn_hwnd)
     }
-    # if ($enableSpeakersDenoising){
-		# $hwnd = $user32::FindWindow("RTXVoiceWindowClass","")
-		# adapt for speakers msg
-		# $btn_hwnd = $user32::FindWindowEx($hwnd,0,"Button","Remove background noise from my microphone") #try with btn control id 
-		# $WPARAM = $user32::GetDlgCtrlID($btn_hwnd)
-	# }
+    if ($enableSpeakersDenoising){
+		$hwnd = $user32::FindWindow("RTXVoiceWindowClass","")
+		$btn_hwnd_speakers = $user32::FindWindowEx($hwnd,0,"Button","Remove background noise from incoming audio") #try with btn control id 
+		$WPARAM_speakers = $user32::GetDlgCtrlID($btn_hwnd_speakers)
+	}
 }
 
 if (-Not $Debug){
